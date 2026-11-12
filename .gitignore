@@ -1,0 +1,89 @@
+
+# ==========================================
+# Dependências
+# ==========================================
+**/node_modules/
+
+# ==========================================
+# Build e arquivos compilados
+# ==========================================
+**/dist/
+**/build/
+**/.vite/
+*.tsbuildinfo
+
+# ==========================================
+# Variáveis de ambiente e credenciais
+# ==========================================
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# ==========================================
+# Logs
+# ==========================================
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# ==========================================
+# Testes e cobertura
+# ==========================================
+**/coverage/
+**/playwright-report/
+**/test-results/
+
+# ==========================================
+# Docker e bancos de dados locais
+# ==========================================
+**/mongo-data/
+**/redis-data/
+**/mongodb_data/
+**/redis_data/
+*.dump
+
+# ==========================================
+# Arquivos temporários
+# ==========================================
+*.tmp
+*.temp
+*.bak
+.cache/
+
+# ==========================================
+# Scripts temporários de autenticação
+# ==========================================
+backend/get-token.ts
+backend/set-admin.ts
+backend/test-supabase.ts
+
+# ==========================================
+# Windows
+# ==========================================
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ==========================================
+# Linux e macOS
+# ==========================================
+.DS_Store
+.Trash-*
+
+# ==========================================
+# Editores e IDEs
+# ==========================================
+.idea/
+.vs/
+*.suo
+*.user
+*.userosscache
+
+# ==========================================
+# Arquivos de configuração local
+# ==========================================
+.vscode/*
+!.vscode/extensions.json
