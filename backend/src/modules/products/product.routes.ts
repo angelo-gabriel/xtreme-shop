@@ -11,6 +11,17 @@ import * as ProductService from "./product.service.js";
 
 import { requireAdmin } from "../../plugins/authentication.js";
 
+function getVisitorId(value: string | undefined): string | null {
+  if (!value) {
+    return null;
+  }
+
+  const uuidRegex =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+  return uuidRegex.test(value) ? value : null;
+}
+
 export async function productRoutes(app: FastifyInstance) {
   // Criar produto
   app.post(
@@ -61,6 +72,21 @@ export async function productRoutes(app: FastifyInstance) {
     },
   );
 
+  app.get("/recently-viewed", async (request, reply) => {
+    const visitorHeader = request.headers["x-visitor-id"];
+    const visitorId = getVisitorId(
+      Array.isArray(visitorHeader) ? visitorHeader[0] : visitorHeader,
+    );
+
+    if (!visitorId) {
+      return reply.code(400).send({
+        message: "Identificador de visitante inválido ou não informado.",
+      });
+    }
+
+    return ProductService.getRecentlyViewedProducts(visitorId);
+  });
+
   // Consultar produto
   app.get(
     "/:id",
@@ -72,7 +98,15 @@ export async function productRoutes(app: FastifyInstance) {
     async (request, reply) => {
       const { id } = productIdSchema.parse(request.params);
 
-      const product = await ProductService.getProductById(id);
+      const visitorHeader = request.headers["x-visitor-id"];
+      const visitorId = getVisitorId(
+        Array.isArray(visitorHeader) ? visitorHeader[0] : visitorHeader,
+      );
+
+      const product = await ProductService.getProductById(
+        id,
+        visitorId ?? undefined,
+      );
 
       if (!product) {
         return reply.code(404).send({

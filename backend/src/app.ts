@@ -36,7 +36,9 @@ export async function buildApp() {
 
   // CORS
   await app.register(cors, {
-    origin: env.CORS_ORIGIN.split(",").map((origin) => origin.trim()),
+    origin: env.CORS_ORIGIN,
+    methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "x-visitor-id"],
   });
 
   // Segurança HTTP
