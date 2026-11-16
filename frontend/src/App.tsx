@@ -1,31 +1,66 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
-import { Header } from "./components/layout/Header";
 import { CatalogPage } from "./pages/CatalogPage";
 import { ProductPage } from "./pages/ProductPage";
 import { RecentlyViewedPage } from "./pages/RecentlyViewedPage";
 
+import { ProtectedAdminRoute } from "./components/admin/ProtectedAdminRoute";
+import { AdminLayout } from "./components/admin/AdminLayout";
+
+import { AdminLoginPage } from "./pages/admin/AdminLoginPage";
+import { AdminProductsPage } from "./pages/admin/AdminProductsPage";
+import { AdminCategoriesPage } from "./pages/admin/AdminCategoriesPage";
+
+import { Header } from "./components/layout/Header";
+
 export default function App() {
   return (
-    <>
-      <Header />
+    <Routes>
+      {/* Loja */}
+      <Route
+        path="/"
+        element={
+          <>
+            <Header />
+            <CatalogPage />
+          </>
+        }
+      />
 
-      <Routes>
-        <Route path="/" element={<CatalogPage />} />
+      <Route
+        path="/products/:id"
+        element={
+          <>
+            <Header />
+            <ProductPage />
+          </>
+        }
+      />
 
-        <Route path="/products/:id" element={<ProductPage />} />
+      <Route
+        path="/recently-viewed"
+        element={
+          <>
+            <Header />
+            <RecentlyViewedPage />
+          </>
+        }
+      />
 
-        <Route path="/recently-viewed" element={<RecentlyViewedPage />} />
+      {/* Login administrativo */}
+      <Route path="/admin/login" element={<AdminLoginPage />} />
 
-        <Route
-          path="*"
-          element={
-            <main className="container">
-              <h1>Página não encontrada</h1>
-            </main>
-          }
-        />
-      </Routes>
-    </>
+      {/* Área administrativa protegida */}
+      <Route element={<ProtectedAdminRoute />}>
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Navigate to="/admin/products" replace />} />
+
+          <Route path="products" element={<AdminProductsPage />} />
+          <Route path="categories" element={<AdminCategoriesPage />} />
+        </Route>
+      </Route>
+
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
