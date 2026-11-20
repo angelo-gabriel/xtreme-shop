@@ -339,6 +339,15 @@ O backend estará disponível em:
 http://localhost:3333
 ```
 
+Para popular o banco com categorias e produtos variados para testes:
+
+```bash
+cd backend
+npm run seed
+```
+
+O comando recria o catálogo com dados de exemplo. Ele não pode ser executado com `NODE_ENV=production`.
+
 Verifique o funcionamento:
 
 ```text
